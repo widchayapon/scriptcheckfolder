@@ -9,7 +9,7 @@ DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")
 
 # ตั้งค่าการแจ้งเตือน
 STORAGE_FREE_LIMIT_BYTES = 200 * 1024 * 1024  # 200 MB
-CHECK_INTERVAL = 5  # วินาที
+CHECK_INTERVAL = 10  # วินาที
 STORAGE_PATH = "/home/file_test"  # โฟลเดอร์ที่ต้องการเช็คพื้นที่
 
 def send_discord_alert(message):
@@ -20,18 +20,6 @@ def send_discord_alert(message):
         print("✅ แจ้งเตือนสำเร็จ!")
     else:
         print(f"⚠️ ส่งแจ้งเตือนล้มเหลว: {response.status_code}")
-
-def test_discord_connection():
-    """ ทดสอบการเชื่อมต่อกับ Discord Webhook """
-    test_message = "✅ ระบบ Monitor พร้อมทำงาน! จากเครื่อง 14"
-    data = {"content": test_message}
-    response = requests.post(DISCORD_WEBHOOK_URL, json=data)
-
-    if response.status_code == 204:
-        print("✅ เชื่อมต่อกับ Discord Webhook สำเร็จ!")
-    else:
-        print(f"⚠️ ไม่สามารถเชื่อมต่อกับ Discord Webhook: {response.status_code}")
-
 def get_folder_size(path):
     """ คำนวณขนาดรวมของไฟล์ในโฟลเดอร์ """
     total_size = 0
