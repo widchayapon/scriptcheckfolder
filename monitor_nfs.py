@@ -32,8 +32,6 @@ def get_folder_size(path):
 
 def monitor_system():
     """มอนิเตอร์ Storage: เช็กทีละโฟลเดอร์ย่อย และแจ้งเตือนถ้ามีขนาดเกิน 200MB"""
-    test_discord_connection()
-
     while True:
         # ดึง list โฟลเดอร์ย่อยใน STORAGE_PATH
         subfolders = [os.path.join(STORAGE_PATH, name) for name in os.listdir(STORAGE_PATH) if os.path.isdir(os.path.join(STORAGE_PATH, name))]
