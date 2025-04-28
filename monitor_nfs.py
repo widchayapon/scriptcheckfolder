@@ -49,6 +49,10 @@ def monitor_system():
     while True:
         # ดึง list โฟลเดอร์ย่อยใน STORAGE_PATH
         subfolders = [os.path.join(STORAGE_PATH, name) for name in os.listdir(STORAGE_PATH) if os.path.isdir(os.path.join(STORAGE_PATH, name))]
+        
+        # แจ้งจำนวนโฟลเดอร์ที่ตรวจพบ
+        folder_count = len(subfolders)
+        send_discord_alert(f"📦 พบโฟลเดอร์ทั้งหมด {folder_count} อันใน '{STORAGE_PATH}'")
 
         for folder in subfolders:
             folder_size = get_folder_size(folder)
