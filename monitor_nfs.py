@@ -43,22 +43,24 @@ def get_folder_size(path):
     return total_size
 
 def monitor_system():
-    """ มอนิเตอร์ Storage: แจ้งเตือนถ้าพื้นที่เหลือน้อยกว่า 200 MB """
-    test_discord_connection()  # เช็กการเชื่อมต่อก่อนเริ่ม Monitor
+    """มอนิเตอร์ Storage: เช็กทีละโฟลเดอร์ย่อย และแจ้งเตือนถ้ามีขนาดเกิน 200MB"""
+    test_discord_connection()
 
     while True:
-        folder_size = get_folder_size(STORAGE_PATH)
-        folder_size_mb = folder_size / (1024 * 1024)  # แปลงเป็น MB
+        # ดึง list โฟลเดอร์ย่อยใน STORAGE_PATH
+        subfolders = [os.path.join(STORAGE_PATH, name) for name in os.listdir(STORAGE_PATH) if os.path.isdir(os.path.join(STORAGE_PATH, name))]
 
-        # แสดงขนาดของไฟล์รวมในโฟลเดอร์
-        print(f"[INFO] ขนาดทั้งหมดของไฟล์ใน {STORAGE_PATH}: {folder_size_mb:.2f} MB")
+        for folder in subfolders:
+            folder_size = get_folder_size(folder)
+            folder_size_mb = folder_size / (1024 * 1024)
 
-        # เช็คถ้าขนาดทั้งหมดของไฟล์ในโฟลเดอร์มีขนาดเกิน 200 MB
-        if folder_size >= STORAGE_FREE_LIMIT_BYTES:
-            send_discord_alert("⚠️ รายงานจากเครื่อง NFS")
-            send_discord_alert(
-                f"⚠️ Storage '{STORAGE_PATH}' มีขนาดไฟล์ทั้งหมด {folder_size_mb:.2f} MB ({folder_size} Bytes) ซึ่งเกิน 200 MB!"
-            )
+            print(f"[INFO] ขนาดโฟลเดอร์ '{folder}': {folder_size_mb:.2f} MB")
+
+            if folder_size >= STORAGE_FREE_LIMIT_BYTES:
+                send_discord_alert("⚠️ รายงานจากเครื่อง NFS")
+                send_discord_alert(
+                    f"⚠️ โฟลเดอร์ '{folder}' มีขนาดไฟล์ทั้งหมด {folder_size_mb:.2f} MB ({folder_size} Bytes) ซึ่งเกิน 200 MB!"
+                )
 
         time.sleep(CHECK_INTERVAL)
 
