@@ -44,6 +44,7 @@ def monitor_system():
         send_discord_alert(f"📦 พบโฟลเดอร์ทั้งหมด {folder_count} อันใน '{STORAGE_PATH}'")
 
         for folder in subfolders:
+            send_discord_alert("📢 รายงานจากเครื่อง NFS")
             folder_size = get_folder_size(folder)
             folder_size_mb = folder_size / (1024 * 1024)
 
@@ -51,7 +52,6 @@ def monitor_system():
 
             if folder_size >= STORAGE_FREE_LIMIT_BYTES:
                 # ถ้าเกิน 200MB -> แจ้งเตือน
-                send_discord_alert("📢 รายงานจากเครื่อง NFS")
                 send_discord_alert(
                     f"⚠️ โฟลเดอร์ '{folder}' มีขนาดไฟล์ทั้งหมด {folder_size_mb:.2f} MB ({folder_size} Bytes) ซึ่งเกิน 200 MB!"
                 )
