@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  system-monitor:
+    build: .
+    container_name: monitor-nfs
+    restart: always
+    env_file: .env
+    volumes:
+      - /home/file_test:/home/file_test:ro
